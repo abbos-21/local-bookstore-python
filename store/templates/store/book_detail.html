@@ -1,0 +1,67 @@
+{% extends 'store/base.html' %}
+{% block content %}
+
+<div class="row">
+  <div class="col-md-4">
+    {% if book.cover %}
+      <img src="{{ book.cover.url }}" class="img-fluid mb-3" alt="{{ book.title }}">
+    {% endif %}
+  </div>
+
+  <div class="col-md-8">
+    <h2>{{ book.title }}</h2>
+    <p><strong>Author:</strong> {{ book.author }}</p>
+    <p><strong>Category:</strong> {{ book.category }}</p>
+    <p>{{ book.description }}</p>
+    <p><strong>Price:</strong> ${{ book.price }}</p>
+    <p><strong>Stock:</strong> {{ book.stock }}</p>
+
+    {% if not request.user.is_staff and not request.user.is_superuser %}
+      <form method="post" action="{% url 'store:cart_add' book.id %}">
+        {% csrf_token %}
+        <button class="btn btn-primary mt-2">Add to Cart</button>
+      </form>
+    {% endif %}
+  </div>
+</div>
+
+<hr>
+
+<h3 class="mt-4">Reviews</h3>
+
+{% if book.reviews.all %}
+  <ul class="list-group mb-4">
+    {% for r in book.reviews.all %}
+      <li class="list-group-item">
+        <strong>{{ r.customer.user.username }}</strong>
+        — Rating: {{ r.rating }}/5
+        <br>
+        {{ r.comment }}
+        <br>
+        <small class="text-muted">{{ r.created_at }}</small>
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>No reviews yet.</p>
+{% endif %}
+
+
+{% if request.user.is_authenticated %}
+
+  {% if not request.user.is_staff and not request.user.is_superuser %}
+      <h4>Add a Review</h4>
+      <form method="post" action="{% url 'store:add_review' book.slug %}">
+        {% csrf_token %}
+        {{ review_form.as_p }}
+        <button class="btn btn-success btn-sm">Submit Review</button>
+      </form>
+  {% endif %}
+
+{% else %}
+  <p>
+    <a href="{% url 'store:login' %}">Login</a> to add a review.
+  </p>
+{% endif %}
+
+{% endblock %}

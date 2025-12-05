@@ -1,0 +1,21 @@
+{% extends "store/base.html" %}
+{% block content %}
+
+<h1>Categories</h1>
+
+<div class="row">
+  {% for category in categories %}
+    <div class="col-md-4 mb-3">
+      <div class="card p-3 h-100">
+        <h4>{{ category.name }}</h4>
+        <p>{{ category.description|truncatewords:20 }}</p>
+        <p><strong>Books:</strong> {{ category.books.count }}</p>
+        <a class="btn btn-primary btn-sm" href="{% url 'store:category_detail' category.slug %}">View Category</a>
+      </div>
+    </div>
+  {% empty %}
+    <p>No categories found.</p>
+  {% endfor %}
+</div>
+
+{% endblock %}

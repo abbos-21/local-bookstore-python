@@ -1,0 +1,21 @@
+{% extends "store/base.html" %}
+{% block content %}
+
+<h1>Authors</h1>
+
+<div class="row">
+  {% for author in authors %}
+    <div class="col-md-4 mb-3">
+      <div class="card p-3 h-100">
+        <h4>{{ author.name }}</h4>
+        <p>{{ author.biography|truncatewords:25 }}</p>
+        <p><strong>Books:</strong> {{ author.books.count }}</p>
+        <a class="btn btn-primary btn-sm" href="{% url 'store:author_detail' author.slug %}">View Author</a>
+      </div>
+    </div>
+  {% empty %}
+    <p>No authors found.</p>
+  {% endfor %}
+</div>
+
+{% endblock %}

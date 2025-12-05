@@ -1,0 +1,54 @@
+{% extends "store/base.html" %}
+{% block content %}
+
+<h2>My Orders</h2>
+
+{% if orders %}
+  <div class="list-group">
+
+    {% for order in orders %}
+      <div class="list-group-item mb-3">
+
+        <h5>
+          Order #{{ order.id }} — 
+          <span class="text-muted">{{ order.get_status_display }}</span>
+        </h5>
+
+        <p><small>{{ order.created_at }}</small></p>
+
+        <table class="table table-sm mt-2">
+          <thead>
+            <tr>
+              <th>Book</th>
+              <th>Qty</th>
+              <th>Unit Price</th>
+              <th>Subtotal</th>
+            </tr>
+          </thead>
+
+          <tbody>
+          {% for item in order.items.all %}
+            <tr>
+              <td>{{ item.book.title }}</td>
+              <td>{{ item.quantity }}</td>
+              <td>${{ item.book.price }}</td>
+              <td>${{ item.subtotal }}</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+
+        <h5 class="text-end">
+          <strong>Total:</strong> ${{ order.total }}
+        </h5>
+
+      </div>
+    {% endfor %}
+
+  </div>
+
+{% else %}
+  <p>You have no orders yet.</p>
+{% endif %}
+
+{% endblock %}

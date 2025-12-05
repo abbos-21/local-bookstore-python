@@ -1,0 +1,19 @@
+{% extends "store/base.html" %}
+{% block content %}
+
+<h2>{{ category.name }}</h2>
+
+<p>{{ category.description }}</p>
+
+<h4 class="mt-4">Books in this category</h4>
+<ul>
+  {% for book in category.books.all %}
+    <li>
+      <a href="{{ book.get_absolute_url }}">{{ book.title }}</a>
+    </li>
+  {% empty %}
+    <p>No books found in this category.</p>
+  {% endfor %}
+</ul>
+
+{% endblock %}

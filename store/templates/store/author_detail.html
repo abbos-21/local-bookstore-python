@@ -1,0 +1,19 @@
+{% extends "store/base.html" %}
+{% block content %}
+
+<h2>{{ author.name }}</h2>
+
+<p>{{ author.biography }}</p>
+
+<h4 class="mt-4">Books by {{ author.name }}</h4>
+<ul>
+  {% for book in author.books.all %}
+    <li>
+      <a href="{{ book.get_absolute_url }}">{{ book.title }}</a>
+    </li>
+  {% empty %}
+    <p>No books found for this author.</p>
+  {% endfor %}
+</ul>
+
+{% endblock %}
